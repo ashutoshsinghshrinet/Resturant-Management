@@ -11,23 +11,23 @@ using Restaurant.Web.Models;
 namespace Resturant.Web.Areas.Manage.Controllers
 {
     [Area("Manage")]
-    public class MenuItemsController : Controller
+    public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MenuItemsController(ApplicationDbContext context)
+        public OrdersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Manage/MenuItems
+        // GET: Manage/Orders
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.MenuItems.Include(m => m.Category);
+            var applicationDbContext = _context.Orders.Include(o => o.Customer);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Manage/MenuItems/Details/5
+        // GET: Manage/Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,42 +35,42 @@ namespace Resturant.Web.Areas.Manage.Controllers
                 return NotFound();
             }
 
-            var menuItem = await _context.MenuItems
-                .Include(m => m.Category)
-                .FirstOrDefaultAsync(m => m.MenuItemId == id);
-            if (menuItem == null)
+            var order = await _context.Orders
+                .Include(o => o.Customer)
+                .FirstOrDefaultAsync(m => m.OrderNumber == id);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return View(menuItem);
+            return View(order);
         }
 
-        // GET: Manage/MenuItems/Create
+        // GET: Manage/Orders/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+            ViewData["CustomerID"] = new SelectList(_context.Customer, "CustomerID", "CustomerName");
             return View();
         }
 
-        // POST: Manage/MenuItems/Create
+        // POST: Manage/Orders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MenuItemId,MenuItemName,Description,Price,ImageURL,CategoryId")] MenuItem menuItem)
+        public async Task<IActionResult> Create([Bind("OrderNumber,CustomerID,OrderDateTime")] Order order)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(menuItem);
+                _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", menuItem.CategoryId);
-            return View(menuItem);
+            ViewData["CustomerID"] = new SelectList(_context.Customer, "CustomerID", "CustomerName", order.CustomerID);
+            return View(order);
         }
 
-        // GET: Manage/MenuItems/Edit/5
+        // GET: Manage/Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,23 +78,23 @@ namespace Resturant.Web.Areas.Manage.Controllers
                 return NotFound();
             }
 
-            var menuItem = await _context.MenuItems.FindAsync(id);
-            if (menuItem == null)
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", menuItem.CategoryId);
-            return View(menuItem);
+            ViewData["CustomerID"] = new SelectList(_context.Customer, "CustomerID", "CustomerName", order.CustomerID);
+            return View(order);
         }
 
-        // POST: Manage/MenuItems/Edit/5
+        // POST: Manage/Orders/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MenuItemId,MenuItemName,Description,Price,ImageURL,CategoryId")] MenuItem menuItem)
+        public async Task<IActionResult> Edit(int id, [Bind("OrderNumber,CustomerID,OrderDateTime")] Order order)
         {
-            if (id != menuItem.MenuItemId)
+            if (id != order.OrderNumber)
             {
                 return NotFound();
             }
@@ -103,12 +103,12 @@ namespace Resturant.Web.Areas.Manage.Controllers
             {
                 try
                 {
-                    _context.Update(menuItem);
+                    _context.Update(order);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MenuItemExists(menuItem.MenuItemId))
+                    if (!OrderExists(order.OrderNumber))
                     {
                         return NotFound();
                     }
@@ -119,11 +119,11 @@ namespace Resturant.Web.Areas.Manage.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", menuItem.CategoryId);
-            return View(menuItem);
+            ViewData["CustomerID"] = new SelectList(_context.Customer, "CustomerID", "CustomerName", order.CustomerID);
+            return View(order);
         }
 
-        // GET: Manage/MenuItems/Delete/5
+        // GET: Manage/Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,31 +131,31 @@ namespace Resturant.Web.Areas.Manage.Controllers
                 return NotFound();
             }
 
-            var menuItem = await _context.MenuItems
-                .Include(m => m.Category)
-                .FirstOrDefaultAsync(m => m.MenuItemId == id);
-            if (menuItem == null)
+            var order = await _context.Orders
+                .Include(o => o.Customer)
+                .FirstOrDefaultAsync(m => m.OrderNumber == id);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return View(menuItem);
+            return View(order);
         }
 
-        // POST: Manage/MenuItems/Delete/5
+        // POST: Manage/Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var menuItem = await _context.MenuItems.FindAsync(id);
-            _context.MenuItems.Remove(menuItem);
+            var order = await _context.Orders.FindAsync(id);
+            _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MenuItemExists(int id)
+        private bool OrderExists(int id)
         {
-            return _context.MenuItems.Any(e => e.MenuItemId == id);
+            return _context.Orders.Any(e => e.OrderNumber == id);
         }
     }
 }

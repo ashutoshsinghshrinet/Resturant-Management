@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20220811161152_addedCustomer.cs" />
+    <Compile Remove="Migrations\20220811161152_addedCustomer.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.26" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.27">
       <PrivateAssets>all</PrivateAssets>

@@ -22,9 +22,10 @@ namespace Restaurant.Web.Models
         public string Description { get; set; }
 
         [Required]
-        [DefaultValue(true)]
-        [Display(Name = "Is enabled?")]
-        public bool IsEnabled { get; set; } = true;
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Price { get; set; }
+
+        public string ImageURL { get; set; }
 
 
         #region Navigation Properties for Category Model

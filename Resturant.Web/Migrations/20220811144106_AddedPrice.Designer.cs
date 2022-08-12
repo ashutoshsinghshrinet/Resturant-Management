@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Restaurant.Web.Data;
 
 namespace Resturant.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220811144106_AddedPrice")]
+    partial class AddedPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,15 +76,10 @@ namespace Resturant.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CustomerID")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("OrderDateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("OrderNumber");
-
-                    b.HasIndex("CustomerID");
 
                     b.ToTable("Orders");
                 });
@@ -112,40 +109,11 @@ namespace Resturant.Web.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("Resturant.Web.Models.Customer", b =>
-                {
-                    b.Property<int>("CustomerID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CustomerID");
-
-                    b.ToTable("Customers");
-                });
-
             modelBuilder.Entity("Restaurant.Web.Models.MenuItem", b =>
                 {
                     b.HasOne("Restaurant.Web.Models.Category", "Category")
                         .WithMany("MenuItems")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Restaurant.Web.Models.Order", b =>
-                {
-                    b.HasOne("Resturant.Web.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -7,34 +7,31 @@
 <h1>Details</h1>
 
 <div>
-    <h4>MenuItem</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MenuItemName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MenuItemName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsEnabled)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsEnabled)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
-    </dl>
+     <div class="card" style="width:50%; margin:auto">
+        <div class="card-title text-center">
+            <h2 style="align-content:center">@Html.DisplayFor(model => model.MenuItemName)</h2>
+        </div>
+        <img class="card-img-top" src="@Model.ImageURL" alt="@Model.MenuItemName" 
+             style="max-height: 300px;">
+        <div class="card-body">
+            <h4 class="card-title">@Model.Description</h4>
+            <div class="row">
+                <div class="col card-text">
+                    @Html.DisplayNameFor(model => model.Price)
+                </div>
+                <div class="col card-text">
+                    @Html.DisplayFor(model => model.Price)
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <a asp-action="Edit" asp-route-id="@Model.MenuItemId" class="btn btn-primary">Edit</a>
+            &nbsp;|&nbsp;
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.MenuItemId">Edit</a> |

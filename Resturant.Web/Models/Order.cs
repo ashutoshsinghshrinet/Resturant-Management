@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Resturant.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,12 @@ namespace Restaurant.Web.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Display(Name ="Table Number")]
         public int OrderNumber { get; set; }
+
+        public int CustomerID { get; set; }
+        [ForeignKey(nameof(Order.CustomerID))]
+        public Customer Customer { get; set; }
 
 
         [Required]
@@ -23,6 +29,7 @@ namespace Restaurant.Web.Models
 
         public ICollection<OrderDetail> OrderDetails { get; set; }
 
+       
         #endregion
 
     }

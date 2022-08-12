@@ -4,12 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 style="text-align:center">Menu</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+
+<table class="table table-striped table-hover">
     <thead>
         <tr>
             <th>
@@ -19,10 +17,14 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsEnabled)
+                @Html.DisplayNameFor(model => model.Price)
             </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                Photo
             </th>
             <th></th>
         </tr>
@@ -37,10 +39,15 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsEnabled)
+                @Html.DisplayFor(modelItem => item.Price)
             </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                <img class="card-img-top" src="@item.ImageURL" alt="@item.MenuItemName" 
+             style="height: 100px; border-radius:40%">
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.MenuItemId">Edit</a> |
@@ -51,3 +58,6 @@
 }
     </tbody>
 </table>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add More Items</a>
+</p>
